@@ -20,12 +20,30 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .two-column-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
         }
 
         h1 {
@@ -144,13 +162,21 @@
         }
 
         .result-section {
-            margin-top: 30px;
-            display: none;
+            display: block;
         }
 
         .result-section.show {
-            display: block;
             animation: fadeIn 0.5s;
+        }
+
+        .result-section .placeholder {
+            background: #f0f4ff;
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            color: #667eea;
+            font-size: 1.2em;
         }
 
         @keyframes fadeIn {
@@ -231,6 +257,12 @@
             background: #45a049;
         }
 
+        @media (max-width: 1024px) {
+            .two-column-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 1.8em;
@@ -252,86 +284,92 @@
         <h1>🎓 FOIL Method Learning Tool 🎓</h1>
         <p class="subtitle">Learn to multiply binomials the fun way!</p>
 
-        <div class="info-box">
-            <h3>What is FOIL?</h3>
-            <p>FOIL is a method to multiply two binomials (expressions with two terms). FOIL stands for:</p>
-            <div class="foil-letters">
-                <div class="foil-letter">
-                    <div style="font-size: 2em;">F</div>
-                    <div>FIRST</div>
+        <div class="two-column-layout">
+            <div class="left-column">
+                <div class="info-box">
+                    <h3>What is FOIL?</h3>
+                    <p>FOIL is a method to multiply two binomials (expressions with two terms). FOIL stands for:</p>
+                    <div class="foil-letters">
+                        <div class="foil-letter">
+                            <div style="font-size: 2em;">F</div>
+                            <div>FIRST</div>
+                        </div>
+                        <div class="foil-letter">
+                            <div style="font-size: 2em;">O</div>
+                            <div>OUTER</div>
+                        </div>
+                        <div class="foil-letter">
+                            <div style="font-size: 2em;">I</div>
+                            <div>INNER</div>
+                        </div>
+                        <div class="foil-letter">
+                            <div style="font-size: 2em;">L</div>
+                            <div>LAST</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="foil-letter">
-                    <div style="font-size: 2em;">O</div>
-                    <div>OUTER</div>
-                </div>
-                <div class="foil-letter">
-                    <div style="font-size: 2em;">I</div>
-                    <div>INNER</div>
-                </div>
-                <div class="foil-letter">
-                    <div style="font-size: 2em;">L</div>
-                    <div>LAST</div>
-                </div>
-            </div>
-        </div>
 
-        <div class="input-section">
-            <h3 style="text-align: center; margin-bottom: 20px; color: #666;">Enter Your Binomials:</h3>
-            <div class="binomial-inputs">
-                <div class="binomial-group">
-                    <span class="operator">(</span>
-                    <input type="text" id="a1" placeholder="x" value="x">
-                    <span class="operator">+</span>
-                    <input type="text" id="b1" placeholder="2" value="2">
-                    <span class="operator">)</span>
+                <div class="input-section">
+                    <h3 style="text-align: center; margin-bottom: 20px; color: #666;">Enter Your Binomials:</h3>
+                    <div class="binomial-inputs">
+                        <div class="binomial-group">
+                            <span class="operator">(</span>
+                            <input type="text" id="a1" placeholder="x" value="x">
+                            <span class="operator">+</span>
+                            <input type="text" id="b1" placeholder="2" value="2">
+                            <span class="operator">)</span>
+                        </div>
+                        <span class="operator">×</span>
+                        <div class="binomial-group">
+                            <span class="operator">(</span>
+                            <input type="text" id="a2" placeholder="x" value="x">
+                            <span class="operator">+</span>
+                            <input type="text" id="b2" placeholder="3" value="3">
+                            <span class="operator">)</span>
+                        </div>
+                    </div>
+                    <button class="solve-btn" onclick="solveFOIL()">✨ Solve with FOIL! ✨</button>
                 </div>
-                <span class="operator">×</span>
-                <div class="binomial-group">
-                    <span class="operator">(</span>
-                    <input type="text" id="a2" placeholder="x" value="x">
-                    <span class="operator">+</span>
-                    <input type="text" id="b2" placeholder="3" value="3">
-                    <span class="operator">)</span>
+
+                <div class="examples">
+                    <h3>Try These Examples:</h3>
+                    <button class="example-btn" onclick="loadExample('x', '2', 'x', '3')">(x + 2)(x + 3)</button>
+                    <button class="example-btn" onclick="loadExample('x', '5', 'x', '1')">(x + 5)(x + 1)</button>
+                    <button class="example-btn" onclick="loadExample('2x', '3', 'x', '4')">(2x + 3)(x + 4)</button>
+                    <button class="example-btn" onclick="loadExample('x', '1', 'x', '1')">(x + 1)(x + 1)</button>
                 </div>
             </div>
-            <button class="solve-btn" onclick="solveFOIL()">✨ Solve with FOIL! ✨</button>
-        </div>
 
-        <div class="examples">
-            <h3>Try These Examples:</h3>
-            <button class="example-btn" onclick="loadExample('x', '2', 'x', '3')">(x + 2)(x + 3)</button>
-            <button class="example-btn" onclick="loadExample('x', '5', 'x', '1')">(x + 5)(x + 1)</button>
-            <button class="example-btn" onclick="loadExample('2x', '3', 'x', '4')">(2x + 3)(x + 4)</button>
-            <button class="example-btn" onclick="loadExample('x', '1', 'x', '1')">(x + 1)(x + 1)</button>
-        </div>
+            <div class="right-column">
+                <div id="result" class="result-section">
+                    <div class="step">
+                        <h3>🔴 Step 1: FIRST - Multiply the first terms</h3>
+                        <div class="step-content" id="step-first"></div>
+                    </div>
 
-        <div id="result" class="result-section">
-            <div class="step">
-                <h3>🔴 Step 1: FIRST - Multiply the first terms</h3>
-                <div class="step-content" id="step-first"></div>
+                    <div class="step">
+                        <h3>🔵 Step 2: OUTER - Multiply the outer terms</h3>
+                        <div class="step-content" id="step-outer"></div>
+                    </div>
+
+                    <div class="step">
+                        <h3>🟢 Step 3: INNER - Multiply the inner terms</h3>
+                        <div class="step-content" id="step-inner"></div>
+                    </div>
+
+                    <div class="step">
+                        <h3>🟡 Step 4: LAST - Multiply the last terms</h3>
+                        <div class="step-content" id="step-last"></div>
+                    </div>
+
+                    <div class="step">
+                        <h3>📝 Step 5: Combine all terms</h3>
+                        <div class="step-content" id="step-combine"></div>
+                    </div>
+
+                    <div class="final-answer" id="final-answer"></div>
+                </div>
             </div>
-
-            <div class="step">
-                <h3>🔵 Step 2: OUTER - Multiply the outer terms</h3>
-                <div class="step-content" id="step-outer"></div>
-            </div>
-
-            <div class="step">
-                <h3>🟢 Step 3: INNER - Multiply the inner terms</h3>
-                <div class="step-content" id="step-inner"></div>
-            </div>
-
-            <div class="step">
-                <h3>🟡 Step 4: LAST - Multiply the last terms</h3>
-                <div class="step-content" id="step-last"></div>
-            </div>
-
-            <div class="step">
-                <h3>📝 Step 5: Combine all terms</h3>
-                <div class="step-content" id="step-combine"></div>
-            </div>
-
-            <div class="final-answer" id="final-answer"></div>
         </div>
     </div>
 
@@ -482,7 +520,6 @@
                 `🎉 Final Answer: ${simplified} 🎉`;
 
             document.getElementById('result').classList.add('show');
-            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
         // Solve on Enter key
