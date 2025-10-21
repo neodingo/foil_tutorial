@@ -84,12 +84,27 @@
         .foil-letter {
             text-align: center;
             padding: 15px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             border-radius: 10px;
             color: white;
             font-weight: bold;
             min-width: 100px;
             margin: 5px;
+        }
+
+        .foil-letter.first-color {
+            background: #e74c3c;
+        }
+
+        .foil-letter.outer-color {
+            background: #3498db;
+        }
+
+        .foil-letter.inner-color {
+            background: #2ecc71;
+        }
+
+        .foil-letter.last-color {
+            background: #f39c12;
         }
 
         .input-section {
@@ -193,10 +208,42 @@
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
+        .step.first-step {
+            border-color: #e74c3c;
+        }
+
+        .step.outer-step {
+            border-color: #3498db;
+        }
+
+        .step.inner-step {
+            border-color: #2ecc71;
+        }
+
+        .step.last-step {
+            border-color: #f39c12;
+        }
+
         .step h3 {
             color: #667eea;
             margin-bottom: 15px;
             font-size: 1.3em;
+        }
+
+        .step.first-step h3 {
+            color: #e74c3c;
+        }
+
+        .step.outer-step h3 {
+            color: #3498db;
+        }
+
+        .step.inner-step h3 {
+            color: #2ecc71;
+        }
+
+        .step.last-step h3 {
+            color: #f39c12;
         }
 
         .step-content {
@@ -212,10 +259,10 @@
             margin: 2px;
         }
 
-        .first { background: #ffcccb; color: #c00; }
-        .outer { background: #add8e6; color: #006; }
-        .inner { background: #90ee90; color: #060; }
-        .last { background: #ffd700; color: #660; }
+        .first { background: #fadbd8; color: #e74c3c; }
+        .outer { background: #d6eaf8; color: #3498db; }
+        .inner { background: #d5f4e6; color: #2ecc71; }
+        .last { background: #fdebd0; color: #f39c12; }
 
         .final-answer {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
@@ -290,19 +337,19 @@
                     <h3>What is FOIL?</h3>
                     <p>FOIL is a method to multiply two binomials (expressions with two terms). FOIL stands for:</p>
                     <div class="foil-letters">
-                        <div class="foil-letter">
+                        <div class="foil-letter first-color">
                             <div style="font-size: 2em;">F</div>
                             <div>FIRST</div>
                         </div>
-                        <div class="foil-letter">
+                        <div class="foil-letter outer-color">
                             <div style="font-size: 2em;">O</div>
                             <div>OUTER</div>
                         </div>
-                        <div class="foil-letter">
+                        <div class="foil-letter inner-color">
                             <div style="font-size: 2em;">I</div>
                             <div>INNER</div>
                         </div>
-                        <div class="foil-letter">
+                        <div class="foil-letter last-color">
                             <div style="font-size: 2em;">L</div>
                             <div>LAST</div>
                         </div>
@@ -342,28 +389,28 @@
 
             <div class="right-column">
                 <div id="result" class="result-section">
-                    <div class="step">
-                        <h3>🔴 Step 1: FIRST - Multiply the first terms</h3>
+                    <div class="step first-step">
+                        <h3>Step 1: FIRST - Multiply the first terms</h3>
                         <div class="step-content" id="step-first"></div>
                     </div>
 
-                    <div class="step">
-                        <h3>🔵 Step 2: OUTER - Multiply the outer terms</h3>
+                    <div class="step outer-step">
+                        <h3>Step 2: OUTER - Multiply the outer terms</h3>
                         <div class="step-content" id="step-outer"></div>
                     </div>
 
-                    <div class="step">
-                        <h3>🟢 Step 3: INNER - Multiply the inner terms</h3>
+                    <div class="step inner-step">
+                        <h3>Step 3: INNER - Multiply the inner terms</h3>
                         <div class="step-content" id="step-inner"></div>
                     </div>
 
-                    <div class="step">
-                        <h3>🟡 Step 4: LAST - Multiply the last terms</h3>
+                    <div class="step last-step">
+                        <h3>Step 4: LAST - Multiply the last terms</h3>
                         <div class="step-content" id="step-last"></div>
                     </div>
 
                     <div class="step">
-                        <h3>📝 Step 5: Combine all terms</h3>
+                        <h3>Step 5: Combine all terms</h3>
                         <div class="step-content" id="step-combine"></div>
                     </div>
 
