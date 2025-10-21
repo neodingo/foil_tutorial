@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOIL Method Learning Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .info-box {
+            background: #f0f4ff;
+            border-left: 5px solid #667eea;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .foil-letters {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .foil-letter {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            min-width: 100px;
+            margin: 5px;
+        }
+
+        .input-section {
+            background: #fff9e6;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border: 3px solid #ffd700;
+        }
+
+        .binomial-inputs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .binomial-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .binomial-group input {
+            width: 80px;
+            padding: 12px;
+            font-size: 1.3em;
+            text-align: center;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .binomial-group input:focus {
+            outline: none;
+            border-color: #f5576c;
+            box-shadow: 0 0 10px rgba(245, 87, 108, 0.3);
+        }
+
+        .operator {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .solve-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .solve-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .solve-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .step h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .step-content {
+            font-size: 1.2em;
+            line-height: 2;
+        }
+
+        .highlight {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 2px;
+        }
+
+        .first { background: #ffcccb; color: #c00; }
+        .outer { background: #add8e6; color: #006; }
+        .inner { background: #90ee90; color: #060; }
+        .last { background: #ffd700; color: #660; }
+
+        .final-answer {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(240, 147, 251, 0.4);
+        }
+
+        .examples {
+            margin-top: 30px;
+            padding: 20px;
+            background: #e8f5e9;
+            border-radius: 15px;
+        }
+
+        .examples h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+
+        .example-btn {
+            margin: 10px 5px;
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        .example-btn:hover {
+            background: #45a049;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .binomial-inputs {
+                flex-direction: column;
+            }
+
+            .foil-letter {
+                min-width: 80px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 FOIL Method Learning Tool 🎓</h1>
+        <p class="subtitle">Learn to multiply binomials the fun way!</p>
+
+        <div class="info-box">
+            <h3>What is FOIL?</h3>
+            <p>FOIL is a method to multiply two binomials (expressions with two terms). FOIL stands for:</p>
+            <div class="foil-letters">
+                <div class="foil-letter">
+                    <div style="font-size: 2em;">F</div>
+                    <div>FIRST</div>
+                </div>
+                <div class="foil-letter">
+                    <div style="font-size: 2em;">O</div>
+                    <div>OUTER</div>
+                </div>
+                <div class="foil-letter">
+                    <div style="font-size: 2em;">I</div>
+                    <div>INNER</div>
+                </div>
+                <div class="foil-letter">
+                    <div style="font-size: 2em;">L</div>
+                    <div>LAST</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <h3 style="text-align: center; margin-bottom: 20px; color: #666;">Enter Your Binomials:</h3>
+            <div class="binomial-inputs">
+                <div class="binomial-group">
+                    <span class="operator">(</span>
+                    <input type="text" id="a1" placeholder="x" value="x">
+                    <span class="operator">+</span>
+                    <input type="text" id="b1" placeholder="2" value="2">
+                    <span class="operator">)</span>
+                </div>
+                <span class="operator">×</span>
+                <div class="binomial-group">
+                    <span class="operator">(</span>
+                    <input type="text" id="a2" placeholder="x" value="x">
+                    <span class="operator">+</span>
+                    <input type="text" id="b2" placeholder="3" value="3">
+                    <span class="operator">)</span>
+                </div>
+            </div>
+            <button class="solve-btn" onclick="solveFOIL()">✨ Solve with FOIL! ✨</button>
+        </div>
+
+        <div class="examples">
+            <h3>Try These Examples:</h3>
+            <button class="example-btn" onclick="loadExample('x', '2', 'x', '3')">(x + 2)(x + 3)</button>
+            <button class="example-btn" onclick="loadExample('x', '5', 'x', '1')">(x + 5)(x + 1)</button>
+            <button class="example-btn" onclick="loadExample('2x', '3', 'x', '4')">(2x + 3)(x + 4)</button>
+            <button class="example-btn" onclick="loadExample('x', '1', 'x', '1')">(x + 1)(x + 1)</button>
+        </div>
+
+        <div id="result" class="result-section">
+            <div class="step">
+                <h3>🔴 Step 1: FIRST - Multiply the first terms</h3>
+                <div class="step-content" id="step-first"></div>
+            </div>
+
+            <div class="step">
+                <h3>🔵 Step 2: OUTER - Multiply the outer terms</h3>
+                <div class="step-content" id="step-outer"></div>
+            </div>
+
+            <div class="step">
+                <h3>🟢 Step 3: INNER - Multiply the inner terms</h3>
+                <div class="step-content" id="step-inner"></div>
+            </div>
+
+            <div class="step">
+                <h3>🟡 Step 4: LAST - Multiply the last terms</h3>
+                <div class="step-content" id="step-last"></div>
+            </div>
+
+            <div class="step">
+                <h3>📝 Step 5: Combine all terms</h3>
+                <div class="step-content" id="step-combine"></div>
+            </div>
+
+            <div class="final-answer" id="final-answer"></div>
+        </div>
+    </div>
+
+    <script>
+        function loadExample(a1, b1, a2, b2) {
+            document.getElementById('a1').value = a1;
+            document.getElementById('b1').value = b1;
+            document.getElementById('a2').value = a2;
+            document.getElementById('b2').value = b2;
+            solveFOIL();
+        }
+
+        function parseInput(value) {
+            value = value.trim();
+            if (value === '') return { coef: 0, variable: '' };
+
+            // Check if it's just a variable
+            if (value.match(/^[a-z]$/i)) {
+                return { coef: 1, variable: value };
+            }
+
+            // Check if it's a number followed by a variable
+            const match = value.match(/^(-?\d*\.?\d+)?([a-z])?$/i);
+            if (match) {
+                const coef = match[1] ? parseFloat(match[1]) : (match[2] ? 1 : 0);
+                const variable = match[2] || '';
+                return { coef, variable };
+            }
+
+            // Just a number
+            if (!isNaN(parseFloat(value))) {
+                return { coef: parseFloat(value), variable: '' };
+            }
+
+            return { coef: 0, variable: '' };
+        }
+
+        function formatTerm(coef, variable) {
+            if (coef === 0) return '0';
+
+            let result = '';
+            if (variable) {
+                if (coef === 1) result = variable;
+                else if (coef === -1) result = '-' + variable;
+                else result = coef + variable;
+            } else {
+                result = coef.toString();
+            }
+            return result;
+        }
+
+        function multiplyTerms(term1, term2) {
+            const coef = term1.coef * term2.coef;
+            let variable = '';
+
+            if (term1.variable && term2.variable) {
+                if (term1.variable === term2.variable) {
+                    variable = term1.variable + '²';
+                } else {
+                    variable = term1.variable + term2.variable;
+                }
+            } else if (term1.variable) {
+                variable = term1.variable;
+            } else if (term2.variable) {
+                variable = term2.variable;
+            }
+
+            return { coef, variable };
+        }
+
+        function solveFOIL() {
+            const a1Val = document.getElementById('a1').value;
+            const b1Val = document.getElementById('b1').value;
+            const a2Val = document.getElementById('a2').value;
+            const b2Val = document.getElementById('b2').value;
+
+            const a1 = parseInput(a1Val);
+            const b1 = parseInput(b1Val);
+            const a2 = parseInput(a2Val);
+            const b2 = parseInput(b2Val);
+
+            // FIRST: a1 * a2
+            const first = multiplyTerms(a1, a2);
+            const firstStr = formatTerm(first.coef, first.variable);
+            document.getElementById('step-first').innerHTML =
+                `<span class="highlight first">${a1Val}</span> × <span class="highlight first">${a2Val}</span> = <strong>${firstStr}</strong>`;
+
+            // OUTER: a1 * b2
+            const outer = multiplyTerms(a1, b2);
+            const outerStr = formatTerm(outer.coef, outer.variable);
+            document.getElementById('step-outer').innerHTML =
+                `<span class="highlight outer">${a1Val}</span> × <span class="highlight outer">${b2Val}</span> = <strong>${outerStr}</strong>`;
+
+            // INNER: b1 * a2
+            const inner = multiplyTerms(b1, a2);
+            const innerStr = formatTerm(inner.coef, inner.variable);
+            document.getElementById('step-inner').innerHTML =
+                `<span class="highlight inner">${b1Val}</span> × <span class="highlight inner">${a2Val}</span> = <strong>${innerStr}</strong>`;
+
+            // LAST: b1 * b2
+            const last = multiplyTerms(b1, b2);
+            const lastStr = formatTerm(last.coef, last.variable);
+            document.getElementById('step-last').innerHTML =
+                `<span class="highlight last">${b1Val}</span> × <span class="highlight last">${b2Val}</span> = <strong>${lastStr}</strong>`;
+
+            // Combine
+            let combineStr = `${firstStr} + ${outerStr} + ${innerStr} + ${lastStr}`;
+
+            // Simplify like terms
+            let terms = {};
+
+            function addTerm(term) {
+                const key = term.variable || 'constant';
+                if (!terms[key]) {
+                    terms[key] = { coef: 0, variable: term.variable };
+                }
+                terms[key].coef += term.coef;
+            }
+
+            addTerm(first);
+            addTerm(outer);
+            addTerm(inner);
+            addTerm(last);
+
+            // Sort terms: x², x, constant
+            const sortOrder = { 'x²': 0, 'x': 1, 'constant': 2 };
+            const sortedTerms = Object.keys(terms).sort((a, b) => {
+                const orderA = sortOrder[a] !== undefined ? sortOrder[a] : 1.5;
+                const orderB = sortOrder[b] !== undefined ? sortOrder[b] : 1.5;
+                return orderA - orderB;
+            });
+
+            let simplified = sortedTerms
+                .filter(key => terms[key].coef !== 0)
+                .map(key => {
+                    const term = terms[key];
+                    return formatTerm(term.coef, term.variable);
+                })
+                .join(' + ')
+                .replace(/\+ -/g, '- ');
+
+            if (simplified === '') simplified = '0';
+
+            document.getElementById('step-combine').innerHTML =
+                `${combineStr}<br><br>Simplifying: <strong style="color: #667eea; font-size: 1.2em;">${simplified}</strong>`;
+
+            document.getElementById('final-answer').innerHTML =
+                `🎉 Final Answer: ${simplified} 🎉`;
+
+            document.getElementById('result').classList.add('show');
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Solve on Enter key
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') solveFOIL();
+            });
+        });
+
+        // Initialize with default example
+        window.addEventListener('load', () => {
+            solveFOIL();
+        });
+    </script>
+</body>
+</html>
